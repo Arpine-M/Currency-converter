@@ -4,6 +4,7 @@ const axios = require('axios');
 const rateLimit = require("express-rate-limit");
 const PORT = process.env.PORT || 5000;
 const app = express();
+const cors = require("cors");
 
 const API_URL = 'https://v6.exchangerate-api.com/v6';
 const API_KEY = process.env.EXCHANGE_RATE_API_KEY
@@ -12,9 +13,15 @@ const apiLimiter = rateLimit({
   max: 100,
 });
 
+//Cors options
+const corsOptions = {
+  origin: ['http://localhost:5173']
+}
+
 // Middlewares
 app.use(express.json());
 app.use(apiLimiter);
+app.use(cors(corsOptions))
 
 //Conversion
 app.post("/api/convert", async (req, res) => {
